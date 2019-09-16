@@ -1,0 +1,7 @@
+Turn on zoomit
+
+Run SQL Query Stress against DataScotland1
+
+Open S3 bucket
+
+Open VSCode
