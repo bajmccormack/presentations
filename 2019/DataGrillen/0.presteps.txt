@@ -1,0 +1,5 @@
+Turn on zoomit
+
+Run SQL Query Stress againast DataGrillen1
+
+Open s3 bucket

@@ -1,0 +1,56 @@
+aws configure
+
+#Describe Instance - Output options are text, json and table - Add Endpoint.Address for specific endpoint
+aws rds describe-db-instances --query "DBInstances[*].[DBInstanceArn,Engine,EngineVersion,DBInstanceIdentifier,DBInstanceStatus]" --output table --region eu-central-1
+
+#Create database instance
+aws rds create-db-instance --db-instance-identifier datagrillen-cli --region eu-central-1 --allocated-storage 20 --db-instance-class db.t2.micro --engine sqlserver-ex --master-username johnrds --master-user-password secure_pass_here --availability-zone eu-central-1a --port 50000 --engine-version 14.00.3049.1.v1 --tags Key=Owner,Value=John
+
+
+#Start a stopped instance
+aws rds start-db-instance --db-instance-identifier datagrillen2
+
+
+#Create Snapshots
+aws rds create-db-snapshot --db-snapshot-identifier datagrillen1-snap20190620 --db-instance-identifier datagrillen1 --region eu-central-1
+
+
+#List snapshots
+aws rds describe-db-snapshots
+aws rds describe-db-snapshots --query "DBSnapshots[*].[DBInstanceIdentifier,DBSnapshotIdentifier,SnapshotCreateTime,Status]" --output table
+aws rds describe-db-snapshots --db-instance-identifier datagrillen1 --output table --region eu-central-1
+aws rds describe-db-snapshots --db-instance-identifier datagrillen-cli --output table --region eu-central-1
+aws rds describe-db-snapshots --query "DBSnapshots[*].[DBInstanceIdentifier,DBSnapshotIdentifier,AvailabilityZone,SnapshotCreateTime,Status]" --output table --region eu-central-1
+
+#Restore database #Can use the same params are create-db-instance but if you don't it inherits the params from the original instance
+aws rds restore-db-instance-from-db-snapshot --db-instance-identifier datagrillen2-Dev --db-snapshot-identifier datagrillen2-snap-20190617 --region eu-central-1
+
+
+
+#Stop instance 
+aws rds stop-db-instance --db-instance-identifier datagrillen1 --region eu-central-1
+aws rds stop-db-instance --db-instance-identifier datagrillen-cli --region eu-central-1
+aws rds stop-db-instance --db-instance-identifier datagrillen2 --region eu-central-1
+aws rds stop-db-instance --db-instance-identifier datagrillen2-dev --region eu-central-1
+
+#Delete instance
+aws rds delete-db-instance --db-instance-identifier datagrillen1x --skip-final-snapshot --region eu-central-1
+aws rds delete-db-instance --db-instance-identifier datagrillen-cli --skip-final-snapshot --region eu-central-1
+aws rds delete-db-instance --db-instance-identifier datagrillen2 --skip-final-snapshot --region eu-central-1
+aws rds delete-db-instance --db-instance-identifier datagrillen2-dev --skip-final-snapshot --region eu-central-1
+
+#Show Cloudwatch metrics
+
+
+#Useful links
+https://docs.aws.amazon.com/cli/latest/reference/rds/restore-db-instance-to-point-in-time.html
+https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ConnectToMicrosoftSQLServerInstance.html
+https://docs.aws.amazon.com/cli/latest/reference/rds/create-db-snapshot.html
+https://docs.aws.amazon.com/cli/latest/reference/rds/describe-db-instances.html
+https://docs.aws.amazon.com/cli/latest/reference/rds/create-db-instance.html
+https://docs.aws.amazon.com/cli/latest/userguide/install-windows.html#install-msi-on-windows
+
+
+
+
+https://johnmccormack.it/2019/03/glasgow-sql-user-group-presentation-sql-server-on-aws
