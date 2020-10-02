@@ -1,0 +1,1 @@
+Test-DbaDbRecoveryModel -SqlInstance localhost | Out-GridView
